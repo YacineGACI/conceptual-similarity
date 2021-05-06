@@ -45,59 +45,6 @@ def expand_seeds(seeds, capacity):
 
 
 
-# def create_dataset(filename, seeds, size=100000, min_prob_pos=0.5):
-#     # threshold = 7.747541239448234 # ==> 75%
-#     threshold = 6.912093323226184 # ==> 51%
-#     with open(filename, "w") as f:
-#         # Step 1 ==> Construct all possible pairs of aspect and opinion terms
-#         phrases = {} # Contains all possible combinations of aspect and opinion terms
-#         for k in seeds.keys():
-#             tmp_per_attribute = []
-#             aspects= seeds[k][0]
-#             opinions = seeds[k][1:]
-#             for opinion_list in opinions:
-#                 # tmp_per_opinion = [x[0] + " " + x[1] for x in itertools.product(aspects, opinion_list)]
-#                 # tmp_per_opinion = [(x[0] + " " + x[1], lm_loss(x[0], x[1])) for x in itertools.product(aspects, opinion_list)]
-#                 tmp_per_opinion = [x[0] + " " + x[1] for x in itertools.product(aspects, opinion_list) if lm_loss(x[0], x[1]) < threshold]
-#                 tmp_per_attribute.append(tmp_per_opinion)
-#             phrases[k] = tmp_per_attribute
-#             print(k)
-
-#         # Step 2 ==> Randomly sample pairs of phrases
-#         catagories = list(seeds.keys())
-#         num_pos = 0
-#         num_neg = 0
-#         for _ in range(size):
-#             roulette = random.random() # If roulette == 1 ==> Force a positive example
-#                                        # If roulette == 0 ==> Randomly take either a pos or neg example
-#             if roulette < min_prob_pos:
-#                 cat = random.randint(0, len(catagories) - 1)
-#                 op = random.randint(0, len(phrases[catagories[cat]]) - 1)
-#                 ph1 = random.randint(0, len(phrases[catagories[cat]][op]) - 1)
-#                 ph2 = random.randint(0, len(phrases[catagories[cat]][op]) - 1)
-
-#                 num_pos += 1
-#                 f.write("{}, {}, {}\n".format(phrases[catagories[cat]][op][ph1], phrases[catagories[cat]][op][ph2], 1))
-#             else:
-#                 cat1 = random.randint(0, len(catagories) - 1)
-#                 op1 = random.randint(0, len(phrases[catagories[cat1]]) - 1)
-#                 ph1 = random.randint(0, len(phrases[catagories[cat1]][op1]) - 1)
-
-#                 cat2 = random.randint(0, len(catagories) - 1)
-#                 op2 = random.randint(0, len(phrases[catagories[cat2]]) - 1)
-#                 ph2 = random.randint(0, len(phrases[catagories[cat2]][op2]) - 1)
-
-#                 sim = 1 if cat1 == cat2 and op1 == op2 else 0
-#                 if sim == 1:
-#                     num_pos += 1
-#                 else:
-#                     num_neg += 1
-#                 f.write("{}, {}, {}\n".format(phrases[catagories[cat1]][op1][ph1], phrases[catagories[cat2]][op2][ph2], sim))
-#         print("POS ==> ", num_pos)
-#         print("NEG ==> ", num_neg)
-#         print("% POS ==>", math.floor((num_pos / size) * 100), "%")
-
-
 
 def create_dataset(seeds, output_filename, size=100000, min_ratio_pos=0.5, filtering_threshold=6.912093323226184):
     with open(output_filename, "w") as f:
